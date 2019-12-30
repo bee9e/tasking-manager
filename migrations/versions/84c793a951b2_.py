@@ -31,19 +31,36 @@ def upgrade():
     op.create_index(
         "idx_notifications_user_id", "notifications", ["user_id"], unique=False
     )
+    fetch_all_users = "select id from users;"
+    all_users = conn.execute(fetch_all_users)
+    for user in all_users:
+        user_id = user[0]
+        insert_user_info = (
+            "insert into notifications (user_id,unread_count,date) values ("
+            + str(user_id)
+            + ","
+            + str(0)
+            + ",'"
+            + str(datetime.now())
+            + "');"
+        )
+        op.execute(insert_user_info)
+
     fetch_all_unread_counts = "select to_user_id, count(*) from messages where read = false group by to_user_id;"
     unread_counts = conn.execute(fetch_all_unread_counts)
     for unread_count in unread_counts:
         user_id = unread_count[0]
         user_unread_count = unread_count[1]
         update_notification_info = (
-            "insert into notifications (user_id,unread_count,date) values ("
+            "update notifications set user_id ="
             + str(user_id)
-            + ","
+            + ",unread_count = "
             + str(user_unread_count)
-            + ",'"
+            + ",date = '"
             + str(datetime.now())
-            + "');"
+            + "' where user_id = "
+            + str(user_id)
+            + ";"
         )
 
         op.execute(update_notification_info)
