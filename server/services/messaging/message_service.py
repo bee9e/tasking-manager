@@ -433,8 +433,8 @@ class MessageService:
             .order_by(sort_column)
             .paginate(page, page_size, True)
         )
-        if results.total == 0:
-            raise NotFound()
+        # if results.total == 0:
+        #     raise NotFound()
 
         messages_dto = MessagesDTO()
         for item in results.items:
