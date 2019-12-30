@@ -184,7 +184,7 @@ class NotificationsAllAPI(Resource):
             )
             return user_messages.to_primitive(), 200
         except NotFound:
-            return {"Error": "No messages found"}, 404
+            return [], 200
         except Exception as e:
             error_msg = f"Messages GET all - unhandled error: {str(e)}"
             current_app.logger.critical(error_msg)
