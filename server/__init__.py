@@ -342,7 +342,7 @@ def add_api_endpoints(app):
     api.add_resource(
         ProjectsTeamsAPI,
         "/api/v2/projects/<int:project_id>/teams/<int:team_id>/",
-        methods=["PUT", "DELETE", "PATCH"],
+        methods=["POST", "DELETE", "PATCH"],
     )
     api.add_resource(
         ProjectsCampaignsAPI,
